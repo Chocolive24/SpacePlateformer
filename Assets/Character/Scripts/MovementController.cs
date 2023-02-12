@@ -24,6 +24,7 @@ public class MovementController : MonoBehaviour
 
     // Jump variables -----------------------------------------------------------------
     [SerializeField] private JumpController _jumpController;
+    [SerializeField] private JumpBuffer _jumpBuffer;
     private Vector2 _appliedGravity = Vector2.zero;
     private bool _isJumping = false;
     private bool _isGrounded;
@@ -47,6 +48,8 @@ public class MovementController : MonoBehaviour
     [SerializeField] private float _boxCastDistance = 0.05f;
 
     [SerializeField] private LayerMask _plateformLayerMask;
+
+    private bool _isDead = false;
     
     private bool _isOnAPlanetTrigger = false;
     private bool _isCollidingAPlanet = false;
@@ -73,9 +76,11 @@ public class MovementController : MonoBehaviour
 
     public bool IsJumping {get { return _isJumping; }}
 
-    public bool IsFalling => _isFalling;
+    public bool IsFalling { get => _isFalling; set => _isFalling = value; }
 
     public bool IsGrounded { get => _isGrounded; set => _isGrounded = value; }
+
+    public bool IsDead { get => _isDead; set => _isDead = value; }
 
     public Rigidbody2D RigidBody2D { get { return _rb; } }
 
@@ -141,18 +146,28 @@ public class MovementController : MonoBehaviour
         // {
         //     jumpButtonPressedTime = Time.time;
         // }
-        
-        HandleMoveHorizontal();
-        HandleGravity();
-        HandleJump();
-        
+
+        if (!_isDead)
+        {
+            HandleMoveHorizontal();
+            HandleGravity();
+            HandleJump();
+        }
     }
 
     private void FixedUpdate()
     {
         // Update the physic of the game with the input of the update.
+
+        if (!_isDead)
+        {
+            _rb.velocity = _gravityVelocity + _movementVelocity;
+        }
+        else
+        {
+            _rb.velocity = Vector2.zero;
+        }
         
-        _rb.velocity = _gravityVelocity + _movementVelocity;
         
 
         // if (_isGrounded)
@@ -201,9 +216,17 @@ public class MovementController : MonoBehaviour
             // Vertical Movements for the Vector of movement
             else if (_jumpController.HorizontalSense.y != 0)
             {
-                //_movementVelocity = _jumpController.HorizontalSense * (_inputs.Move.y * targetSpeed);
-                _movementVelocity = transform.right * _jumpController.HorizontalSense * 
-                                    (_inputs.Move.y * targetSpeed);
+                if (_inputs.Move.x == 0f)
+                {
+                    //_movementVelocity = _jumpController.HorizontalSense * (_inputs.Move.y * targetSpeed);
+                    _movementVelocity = transform.right * _jumpController.HorizontalSense * 
+                                        (_inputs.Move.y * targetSpeed);
+                }
+                else
+                {
+                    _movementVelocity = transform.right * (_inputs.Move.x * targetSpeed);
+                }
+                
             }
         }
         else
@@ -246,7 +269,8 @@ public class MovementController : MonoBehaviour
             
                 else
                 {
-                    _appliedGravity = _jumpController.BaseGravity;
+                    //_appliedGravity = _jumpController.BaseGravity;
+                    _appliedGravity = _jumpController.JumpGravity;
                 }
 
                 Vector2 newYVelocity = _appliedGravity * Time.deltaTime;
@@ -266,7 +290,8 @@ public class MovementController : MonoBehaviour
 
             if (Mathf.Abs(_gravityVelocity.x) <= 20f && Mathf.Abs(_gravityVelocity.y) <= 20f)
             {
-                _gravityVelocity += _jumpController.BaseGravity * Time.deltaTime;
+                //_gravityVelocity += _jumpController.BaseGravity * Time.deltaTime;
+                _gravityVelocity += _jumpController.JumpGravity * Time.deltaTime;
             }
             
             
@@ -306,66 +331,19 @@ public class MovementController : MonoBehaviour
 
     private void HandleJump()
     {
-        // if (Time.time - lastGroundedTime <= _jumpButtonGracePeriod)
-        // {
-        //     _isJumping = false;
-        //     
-        //     if (Time.time - jumpButtonPressedTime <= _jumpButtonGracePeriod)
-        //     {
-        //         _gravityVelocity = _jumpController.InitialJumpVelocity;
-        //         _isJumping = true;        
-        //         jumpButtonPressedTime = null;
-        //         lastGroundedTime = null;
-        //     }
-        // }
-        
-        // if (_coyoteTimeCounter > 0f && _jumpBufferCounter > 0f && !_isJumping)
-        // {
-        //     _gravityVelocity = _jumpController.InitialJumpVelocity;
-        //     _isJumping = true;
-        //     _jumpBufferCounter = 0f;
-        // }
-        // else if (Input.GetButtonDown("Jump") && _isGrounded && _isJumping)
-        // {
-        //     _isJumping = false;
-        //     _coyoteTimeCounter = 0f;
-        // }
-        
-        if (_inputs.Jump && _coyoteTimeCounter > 0f && !_isJumping)
+        if (_inputs.Jump && _coyoteTimeCounter > 0f && !_isJumping || 
+            _inputs.Jump && _jumpBuffer.CanJump && !_isJumping)
         {
             _gravityVelocity = _jumpController.InitialJumpVelocity;
             _isJumping = true;
         }
-        else if (!_inputs.Jump && _isJumping && _isGrounded)
+        else if (!_inputs.Jump && _isJumping && _isGrounded ||
+                 !_inputs.Jump && _isJumping && _jumpBuffer.CanJump)
         {
             _isJumping = false;
         
             _coyoteTimeCounter = 0f;
         }
-        
-        // if (!_isJumping && _coyoteTimeCounter > 0f && _inputs.Jump) // _jumpBufferCounet > 0f à la place de _inputs.Jump
-        // {
-        //     _isJumping = true;
-        //
-        //     if (_planetMovement.PlanetMove)
-        //     {
-        //         _planetMovement.HandleJump();
-        //     }
-        //
-        //     else
-        //     {
-        //         _rb.velocity = new Vector2(_rb.velocity.x, _initalJumpVelocity);
-        //     }
-        //
-        //     _jumpBufferCounter = 0f;
-        // }
-        //
-        // else if (!_inputs.Jump && _isJumping && _isGrounded)
-        // {
-        //     _isJumping = false;
-        //
-        //     _coyoteTimeCounter = 0f;
-        // }
     }
 
     private IEnumerator JumpCooldown()

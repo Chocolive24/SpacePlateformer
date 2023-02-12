@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Planet
+  - Plateform
+  - Alien
+  - Asteroid
+  - Spike
+  - Dangerous
   layers:
   - Default
   - TransparentFX

@@ -1,0 +1,7 @@
+TODO 
+
+- empty gameobject pour gérer les camera et savoir quand switch de coté (pour laisser un moment sans mouvement si peu de déplacement)
+
+- Mort du personnage
+
+- checkpoints

@@ -99,7 +99,7 @@ public class AnimatorController : MonoBehaviour
     
     private void VerticalMoveAnim()
     {
-        if (_inputs.Move.y != 0f) // make the player look in the last direction he went
+        if (_inputs.Move.y != 0f || _inputs.Move.x != 0) // make the player look in the last direction he went
         {
             if (_inputs.Run)
             {
@@ -111,14 +111,22 @@ public class AnimatorController : MonoBehaviour
                 _playerAnimator.SetBool(Move, true);
             }
 
-            if (_jumpController.GravitySense.x > 0)
+            if (_inputs.Move.x == 0f)
             {
-                _spriteRenderer.flipX = _inputs.Move.y < 0;
+                if (_jumpController.GravitySense.x > 0)
+                {
+                    _spriteRenderer.flipX = _inputs.Move.y < 0;
+                }
+                else if (_jumpController.GravitySense.x < 0)
+                {
+                    _spriteRenderer.flipX = _inputs.Move.y > 0;
+                }
             }
-            else if (_jumpController.GravitySense.x < 0)
+            else
             {
-                _spriteRenderer.flipX = _inputs.Move.y > 0;
+                _spriteRenderer.flipX = _inputs.Move.x < 0;
             }
+            
             
         }
         
@@ -131,7 +139,6 @@ public class AnimatorController : MonoBehaviour
 
     public void RotatePlayer()
     {
-        
         if (_jumpController.GravitySense.x > 0)
         {
             transform.Rotate(0, 0, 90);
@@ -140,12 +147,10 @@ public class AnimatorController : MonoBehaviour
         {
             transform.Rotate(0, 0, -90);
         }
-        
     }
 
     public void ResetPlayerRotation()
     {
         transform.rotation = Quaternion.identity;
     }
-    
 }
