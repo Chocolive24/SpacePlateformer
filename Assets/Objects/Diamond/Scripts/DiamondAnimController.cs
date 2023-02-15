@@ -21,8 +21,10 @@ public class DiamondAnimController : MonoBehaviour
     {
         if (_diamond.CanBeAnimated)
         {
-            _animator.SetBool(IsCollected, true);
-            transform.position += new Vector3(0, 0.01f, 0);
+            //_animator.SetBool(IsCollected, true);
+            //transform.position += new Vector3(0, 0.01f, 0);
+            transform.position += transform.up / 100;
+            transform.Rotate(0f, 50f, 0f);
         }
         else
         {

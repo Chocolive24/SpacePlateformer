@@ -18,6 +18,7 @@ public class Enemy : MonoBehaviour
     private float _time;
     private static readonly int IsDead = Animator.StringToHash("IsDead");
     private bool _dead = false;
+    private static readonly int Walking = Animator.StringToHash("Walking");
 
 
     // Start is called before the first frame update
@@ -31,6 +32,11 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         HandleMove();
+
+        if (_direction != Vector2.zero)
+        {
+            _animator.SetBool(Walking, true);
+        }
     }
 
     private void FixedUpdate()

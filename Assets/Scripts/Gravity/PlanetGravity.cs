@@ -112,8 +112,13 @@ public class PlanetGravity : MonoBehaviour
             GameObject player = other.gameObject;
             MovementController movementController = other.gameObject.GetComponent<MovementController>();
             JumpController jumpController = other.gameObject.GetComponent<JumpController>();
+            _playerInputs = other.gameObject.GetComponent<PlayerInputs>();
 
             movementController.IsOnAPlanetTrigger = false;
+
+            _playerInputs.enabled = true;
+
+            _movementController.State = PlayerState.DEFAULT;
             // _movementController.RigidBody2D.drag = 0f;
             jumpController.ResetGravitySense();
             player.transform.rotation = Quaternion.identity;

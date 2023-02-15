@@ -10,7 +10,8 @@ public enum DirectionEnum
     LEFT,
     UP,
     DOWN,
-    ZERO
+    ZERO,
+    BASEGRAVITY
 }
 
 public class JumpController : MonoBehaviour
@@ -20,6 +21,8 @@ public class JumpController : MonoBehaviour
 
     private Vector2 _gravitySense = Vector2.down;
     private Vector2 _horizontalSense = Vector2.right;
+
+    private Vector2 _jumpGravity;
     
     // Jump variables -----------------------------------------------------------------
     private Vector2 _initialJumpVelocity;
@@ -33,6 +36,8 @@ public class JumpController : MonoBehaviour
     
     private float _timeToApex;
 
+    private MovementController _movementController;
+    
     // Getters and Setters ----------------------------------------------------------------------
     public Vector2 BaseGravity { get { return _baseGravityFactor * _gravitySense; } }
     //public Vector2 InitialJumpVelocity { get { return _jumpFactor / _baseGravityFactor * -(_gravitySense.normalized); } }
@@ -42,7 +47,12 @@ public class JumpController : MonoBehaviour
         set => _initialJumpVelocity = value;
     }
     //public Vector2 JumpGravity { get {return _fallFactor  * _baseGravityFactor * _gravitySense;} }
-    public Vector2 JumpGravity { get {return ((2 * _maxJumpHeight) / Mathf.Pow(_timeToApex, 2)) * _gravitySense;} }
+    public Vector2 JumpGravity
+    {
+        get => ((2 * _maxJumpHeight) / Mathf.Pow(_timeToApex, 2)) * _gravitySense;
+        set => _jumpGravity = value;
+    }
+
     //public Vector2 JumpGravity { get {return ((2 * _maxJumpHeight) / Mathf.Pow(_timeToApex, 2)) * transform.up;} }
     public float FallMultiplier => _fallMultiplier;
     
@@ -79,12 +89,21 @@ public class JumpController : MonoBehaviour
     void Start()
     {
         _timeToApex = _maxJumpTime / 2;
+
+        _movementController = GetComponent<MovementController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (_movementController.IsDead)
+        {
+            JumpGravity = Vector2.zero;
+        }
+        else
+        {
+            JumpGravity = ((2 * _maxJumpHeight) / Mathf.Pow(_timeToApex, 2)) * _gravitySense;
+        }
     }
 
     public Vector2 DirectionToVector(DirectionEnum directionEnum)
@@ -101,6 +120,8 @@ public class JumpController : MonoBehaviour
                 return Vector2.down;
             case DirectionEnum.ZERO:
                 return Vector2.zero;
+            case DirectionEnum.BASEGRAVITY:
+                return new Vector2(0, _baseGravityFactor);
         }
 
         return default;

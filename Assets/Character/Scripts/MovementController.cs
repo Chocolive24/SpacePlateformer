@@ -153,6 +153,12 @@ public class MovementController : MonoBehaviour
             HandleGravity();
             HandleJump();
         }
+        else
+        {
+            _appliedGravity = Vector2.zero;
+            _previousYVelocity = Vector2.zero;
+            _gravityVelocity = Vector2.zero;
+        }
     }
 
     private void FixedUpdate()
@@ -167,8 +173,11 @@ public class MovementController : MonoBehaviour
         {
             _rb.velocity = Vector2.zero;
         }
-        
-        
+
+        // if (!_boxCollider.enabled)
+        // {
+        //     _rb.velocity = Vector2.zero;
+        // }
 
         // if (_isGrounded)
         // {
@@ -211,21 +220,24 @@ public class MovementController : MonoBehaviour
             if (_jumpController.HorizontalSense.y == 0)
             {
                 //_movementVelocity = _jumpController.HorizontalSense * (_inputs.Move.x * targetSpeed);
-                _movementVelocity = transform.right * (_inputs.Move.x * targetSpeed);
+                _movementVelocity = transform.right * 
+                                    (_jumpController.HorizontalSense.x * (_inputs.Move.x * targetSpeed));
             }
             // Vertical Movements for the Vector of movement
             else if (_jumpController.HorizontalSense.y != 0)
             {
-                if (_inputs.Move.x == 0f)
-                {
-                    //_movementVelocity = _jumpController.HorizontalSense * (_inputs.Move.y * targetSpeed);
-                    _movementVelocity = transform.right * _jumpController.HorizontalSense * 
-                                        (_inputs.Move.y * targetSpeed);
-                }
-                else
-                {
-                    _movementVelocity = transform.right * (_inputs.Move.x * targetSpeed);
-                }
+                _movementVelocity = transform.right * 
+                                    (_jumpController.HorizontalSense.y * (_inputs.Move.y * targetSpeed));
+                
+                // if (_inputs.Move.x <= 0f && _inputs.Move.x > -1)
+                // {
+                //     //_movementVelocity = _jumpController.HorizontalSense * (_inputs.Move.y * targetSpeed);
+                //     _movementVelocity = transform.right * (_inputs.Move.y * targetSpeed);
+                // }
+                // else
+                // {
+                //     _movementVelocity = transform.right * (_inputs.Move.x * targetSpeed);
+                // }
                 
             }
         }
@@ -238,7 +250,7 @@ public class MovementController : MonoBehaviour
     private void HandleGravity()
     {
         _isFalling = Vector2.Dot(_gravityVelocity, _jumpController.BaseGravity) > 0;
-        
+
         if (_isGrounded && !_isJumping)
         {
             _gravityVelocity = Vector2.zero;
@@ -275,9 +287,13 @@ public class MovementController : MonoBehaviour
 
                 Vector2 newYVelocity = _appliedGravity * Time.deltaTime;
                 Vector2 verletVelocity = (newYVelocity + _previousYVelocity) * 0.5f;
-                _previousYVelocity = newYVelocity;
-            
-                _gravityVelocity += verletVelocity;
+                
+                if (Mathf.Abs(verletVelocity.x) <= 20f && Mathf.Abs(verletVelocity.y) <= 20f)
+                {
+                    _previousYVelocity = newYVelocity;
+
+                    _gravityVelocity += verletVelocity;
+                }
             }
         }
         
@@ -362,9 +378,10 @@ public class MovementController : MonoBehaviour
         
         
         raycastHit = Physics2D.BoxCast(_boxCollider.bounds.center,
-            _boxCollider.bounds.size, transform.rotation.z, _jumpController.BaseGravity,
+            _boxCollider.bounds.size, 0f, 
+            _jumpController.BaseGravity,
             _boxCastDistance,
-            _plateformLayerMask);
+            _plateformLayerMask); // - new Vector3(0.1f, 0f, 0f)
         
         // Debug part
         Color rayColor;
@@ -378,8 +395,8 @@ public class MovementController : MonoBehaviour
             rayColor = Color.red;
         }
 
-         Debug.DrawRay(_boxCollider.bounds.center + new Vector3(_boxCollider.bounds.extents.x, 0), 
-             _gravityVelocity.normalized * (_boxCollider.bounds.extents.y + _boxCastDistance), rayColor);
+         Debug.DrawRay(_boxCollider.bounds.center + new Vector3(_boxCollider.bounds.extents.x, 0) - new Vector3(0.1f, 0, 0), 
+             _gravityVelocity.normalized * (_boxCollider.bounds.extents.y + _boxCastDistance) , rayColor);
         
          Debug.DrawRay(_boxCollider.bounds.center - new Vector3(_boxCollider.bounds.extents.x, 0), 
              _gravityVelocity.normalized * (_boxCollider.bounds.extents.y + _boxCastDistance), rayColor);

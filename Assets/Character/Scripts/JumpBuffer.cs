@@ -20,7 +20,7 @@ public class JumpBuffer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(CanJump);
+        
     }
 
     private void OnTriggerEnter2D(Collider2D col)

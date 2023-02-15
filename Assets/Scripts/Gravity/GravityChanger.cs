@@ -6,8 +6,11 @@ using UnityEngine;
 
 public class GravityChanger : MonoBehaviour
 {
+    [SerializeField] private bool _friction;
     [SerializeField] private DirectionEnum _horizontalDirection;
     [SerializeField] private DirectionEnum _gravityDirection;
+    [SerializeField] private DirectionEnum _exitHorizontalDirection;
+    [SerializeField] private DirectionEnum _exitGravityDirection;
     
     private GameObject _player;
     private JumpController _jumpController;
@@ -67,24 +70,32 @@ public class GravityChanger : MonoBehaviour
     private IEnumerator GravityChangeCo(bool enter)
     {
         //_movementController.State = PlayerState.CHANGING_GRAVITY;
-        _jumpController.SetGravitySenseToPlanet(Vector2.zero);
-        _movementController.MovementVelocity -= _movementController.MovementVelocity.normalized * 4;
-        _movementController.GravityVelocity -= _movementController.GravityVelocity.normalized * 8;
-        //_movementController.GravityVelocity = Vector2.zero;
+        if (_friction)
+        {
+            _jumpController.SetGravitySenseToPlanet(Vector2.zero);
+            _movementController.MovementVelocity -= _movementController.MovementVelocity.normalized * 4;
+            _movementController.GravityVelocity -= _movementController.GravityVelocity.normalized * 8;
+            
+            //_movementController.GravityVelocity = Vector2.zero;
+            
+            yield return new WaitForSeconds(0.2f);
+        }
+        
+        
 
-        yield return new WaitForSeconds(0.2f);
+        
         
         //_movementController.State = PlayerState.DEFAULT;
         
         if (enter)
         {
             _jumpController.SetGravitySense(_horizontalDirection, _gravityDirection);
-            _animatorController.RotatePlayer();
+            //_animatorController.RotatePlayer();
         }
         else
         {
-            _jumpController.ResetGravitySense();
-            _animatorController.ResetPlayerRotation();
+            _jumpController.SetGravitySense(_exitHorizontalDirection, _exitGravityDirection);
+            //_animatorController.RotatePlayer();
         }
     }
 }

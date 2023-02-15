@@ -52,7 +52,7 @@ MonoBehaviour:
   _speed: 2
   _spriteRenderer: {fileID: 7907693621131048781}
   _deathPart: {fileID: 253317045447455408}
-  _animator: {fileID: 0}
+  _animator: {fileID: 7731330590852616720}
   _walkTime: 2
 --- !u!50 &5175312579356302392
 Rigidbody2D:
