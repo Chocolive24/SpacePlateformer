@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &5060497955971010972
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2875844835512404515, guid: dacb5540fc6c26f44922cfa4701b54a5, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3269342268394265294, guid: dacb5540fc6c26f44922cfa4701b54a5, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6621951473346565852, guid: dacb5540fc6c26f44922cfa4701b54a5, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6621951473346565852, guid: dacb5540fc6c26f44922cfa4701b54a5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 244.04622
+      objectReference: {fileID: 0}
+    - target: {fileID: 6621951473346565852, guid: dacb5540fc6c26f44922cfa4701b54a5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 15.2008915
+      objectReference: {fileID: 0}
+    - target: {fileID: 6621951473346565852, guid: dacb5540fc6c26f44922cfa4701b54a5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6621951473346565852, guid: dacb5540fc6c26f44922cfa4701b54a5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6621951473346565852, guid: dacb5540fc6c26f44922cfa4701b54a5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6621951473346565852, guid: dacb5540fc6c26f44922cfa4701b54a5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6621951473346565852, guid: dacb5540fc6c26f44922cfa4701b54a5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6621951473346565852, guid: dacb5540fc6c26f44922cfa4701b54a5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6621951473346565852, guid: dacb5540fc6c26f44922cfa4701b54a5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6621951473346565852, guid: dacb5540fc6c26f44922cfa4701b54a5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6769198868842080290, guid: dacb5540fc6c26f44922cfa4701b54a5, type: 3}
+      propertyPath: m_Name
+      value: PlanetPolygon
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: dacb5540fc6c26f44922cfa4701b54a5, type: 3}
+--- !u!1 &1825113058680346198 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6876603815394510794, guid: dacb5540fc6c26f44922cfa4701b54a5, type: 3}
+  m_PrefabInstance: {fileID: 5060497955971010972}
+  m_PrefabAsset: {fileID: 0}
+--- !u!60 &2045254440
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1825113058680346198}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.84601593, y: 1.8770685}
+      - {x: 0.047481537, y: 1.9971657}
+      - {x: -0.5703354, y: 1.9250875}
+      - {x: -1.2504692, y: 1.5963445}
+      - {x: -1.7315063, y: 1.0487771}
+      - {x: -1.9007406, y: 0.55830836}
+      - {x: -2.0135803, y: 0.009552956}
+      - {x: -1.8598442, y: -0.7778714}
+      - {x: -1.4613647, y: -1.3787675}
+      - {x: -0.92483276, y: -1.7812756}
+      - {x: -0.35598755, y: -1.9840419}
+      - {x: 0.32932281, y: -1.9901526}
+      - {x: 0.87392426, y: -1.8411005}
+      - {x: 0.8977028, y: -0.8107176}
+      - {x: 0.87527084, y: -0.61608386}
+      - {x: 0.8745222, y: 0.5619878}

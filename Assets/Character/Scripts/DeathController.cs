@@ -6,7 +6,7 @@ using UnityEngine;
 public class DeathController : MonoBehaviour
 {
     [SerializeField] private BoxCollider2D _hitStomp;
-    [SerializeField] private PolygonCollider2D _levelConfiner;
+    //[SerializeField] private PolygonCollider2D _levelConfiner;
     
     private Animator _animator;
     private static readonly int IsDead = Animator.StringToHash("IsDead");
@@ -66,9 +66,22 @@ public class DeathController : MonoBehaviour
 
     private IEnumerator FallCo()
     {
-        yield return new WaitForSeconds(0f);
-    
+        _movementController.IsFalling = false;
+        
+        //_jumpController.SetGravitySenseToPlanet(Vector2.zero);
+        _playerInputs.enabled = false;
+        
+        yield return new WaitForSeconds(0.5f);
+        _movementController.IsDead = true;
+        _movementController.RigidBody2D.velocity = Vector2.zero;
+        
         transform.position = _respawnPoint;
+        transform.rotation = Quaternion.identity;
+
+        yield return new WaitForSeconds(0.3f);
+        
+        _movementController.IsDead = false;
+        _playerInputs.enabled = true;
     }
     
     private IEnumerator DeathCo()
@@ -92,6 +105,7 @@ public class DeathController : MonoBehaviour
         _boxCollider2D.enabled = true;
         
         transform.position = _respawnPoint;
+        transform.rotation = Quaternion.identity;
         
         _jumpController.ResetGravitySense();
         _hitStomp.enabled = true;

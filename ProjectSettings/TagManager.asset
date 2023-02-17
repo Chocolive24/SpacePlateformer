@@ -12,6 +12,7 @@ TagManager:
   - Dangerous
   - CheckPoint
   - LevelConfiner
+  - MovingPlatform
   layers:
   - Default
   - TransparentFX

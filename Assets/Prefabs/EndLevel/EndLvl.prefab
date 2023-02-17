@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1524394235927245695}
   - component: {fileID: 1524394235927245680}
   - component: {fileID: 1524394235927245681}
+  - component: {fileID: 1364787059}
   m_Layer: 0
   m_Name: EndLvl
   m_TagString: Untagged
@@ -127,6 +128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spriteRender: {fileID: 1524394235927245695}
   _animator: {fileID: 2012246703228375430}
+  _fireworkSpawner: {fileID: 1364787059}
   _endPanel: {fileID: 0}
   _nextSceneName: Level2
   _endLvlTime: 3
@@ -145,6 +147,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+--- !u!114 &1364787059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1524394235927245682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80075afe38abfae489f6138a8b03114e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fireworkPrefab: {fileID: 3243659538173057614, guid: 79c8b48f821dfe64f9be1545ed011c2a, type: 3}
+  _timeBetweenSpawns: 0.3
+  _spawnLengthTime: 3
 --- !u!1 &2249206095956808248
 GameObject:
   m_ObjectHideFlags: 0

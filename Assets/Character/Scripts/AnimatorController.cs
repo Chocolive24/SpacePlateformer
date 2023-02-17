@@ -98,7 +98,6 @@ public class AnimatorController : MonoBehaviour
         if (_playerMovement.IsFalling && !_playerMovement.CheckGroundedState())
         {
             _playerAnimator.SetBool(Falling, true);
-            Debug.Log("ici");
         }
         else
         {

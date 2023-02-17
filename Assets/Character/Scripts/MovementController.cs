@@ -60,6 +60,7 @@ public class MovementController : MonoBehaviour
     [SerializeField] private float _jumpButtonGracePeriod = 0.2f;
     private float? lastGroundedTime;
     private float? jumpButtonPressedTime;
+    private bool _isOnMovingPlatform;
 
     // Getters and Setters ------------------------------------------------------------
     public Vector2 MovementVelocity
@@ -87,6 +88,12 @@ public class MovementController : MonoBehaviour
     public bool IsOnAPlanetTrigger { get => _isOnAPlanetTrigger; set => _isOnAPlanetTrigger = value; }
 
     public bool IsCollidingAPlanet { get => _isCollidingAPlanet; set => _isCollidingAPlanet = value; }
+
+    public bool IsOnMovingPlatform
+    {
+        get => _isOnMovingPlatform;
+        set => _isOnMovingPlatform = value;
+    }
 
     public PlayerState State { get => _state; set => _state = value; }
     // --------------------------------------------------------------------------------
@@ -229,10 +236,13 @@ public class MovementController : MonoBehaviour
                 _movementVelocity = transform.right * 
                                     (_jumpController.HorizontalSense.y * (_inputs.Move.y * targetSpeed));
                 
-                // if (_inputs.Move.x <= 0f && _inputs.Move.x > -1)
+                // if (_inputs.Move.x <= 0.8f && _inputs.Move.x > -0.8)
                 // {
-                //     //_movementVelocity = _jumpController.HorizontalSense * (_inputs.Move.y * targetSpeed);
-                //     _movementVelocity = transform.right * (_inputs.Move.y * targetSpeed);
+                //     _movementVelocity = transform.right * 
+                //                         (_jumpController.HorizontalSense.y * (_inputs.Move.y * targetSpeed));
+                //     
+                //     //_movementVelocity = _jumpController.HorizontalSense.y * (_inputs.Move.y * targetSpeed);
+                //     //_movementVelocity = transform.right * (_inputs.Move.y * targetSpeed);
                 // }
                 // else
                 // {
@@ -249,9 +259,12 @@ public class MovementController : MonoBehaviour
     
     private void HandleGravity()
     {
-        _isFalling = Vector2.Dot(_gravityVelocity, _jumpController.BaseGravity) > 0;
-
-        if (_isGrounded && !_isJumping)
+        if (!_isOnMovingPlatform && !_inputs.Jump)
+        {
+            _isFalling = Vector2.Dot(_gravityVelocity, _jumpController.BaseGravity) > 0;
+        }
+        
+        if (_isGrounded && !_isJumping && !_isOnMovingPlatform)
         {
             _gravityVelocity = Vector2.zero;
             _isFalling = false;
@@ -263,7 +276,7 @@ public class MovementController : MonoBehaviour
             _isFalling = false;
         }
 
-        if (State == PlayerState.DEFAULT)
+        if (State == PlayerState.DEFAULT && !_isOnMovingPlatform)
         {
             if (Mathf.Abs(_gravityVelocity.x) <= 20f && Mathf.Abs(_gravityVelocity.y) <= 20f)
             {
@@ -417,6 +430,36 @@ public class MovementController : MonoBehaviour
             _isCollidingAPlanet = true;
             _state = PlayerState.DEFAULT;
         }
+        
+        // if (col.gameObject.CompareTag("MovingPlatform"))
+        // {
+        //     if (Vector2.Dot(col.gameObject.GetComponent<Rigidbody2D>().velocity, _jumpController.BaseGravity) > 0)
+        //     {
+        //         _isOnMovingPlatform = true;
+        //         
+        //         // if (!_isJumping)
+        //         // {
+        //         //     _gravityVelocity = col.gameObject.GetComponent<Rigidbody2D>().velocity * 2;
+        //         // }
+        //     }
+        // }
+    }
+
+    private void OnTriggerStay2D(Collider2D col)
+    {
+        if (col.gameObject.CompareTag("MovingPlatform"))
+        {
+            if (Vector2.Dot(col.gameObject.GetComponent<Rigidbody2D>().velocity, _jumpController.BaseGravity) > 0)
+            {
+                _isOnMovingPlatform = true;
+                
+                if (!_inputs.Jump)
+                {
+                    _gravityVelocity = col.gameObject.GetComponent<Rigidbody2D>().velocity * 4;
+                    Debug.Log(col.gameObject.GetComponent<Rigidbody2D>().velocity);
+                }
+            }
+        }
     }
 
     private void OnCollisionExit2D(Collision2D other)
@@ -424,6 +467,20 @@ public class MovementController : MonoBehaviour
         if (other.gameObject.CompareTag("Planet"))
         {
             _isCollidingAPlanet = false;
+        }
+        
+        if (other.gameObject.CompareTag("MovingPlatform"))
+        {
+            _isOnMovingPlatform = false;
+        }
+        
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("MovingPlatform"))
+        {
+            _isOnMovingPlatform = false;
         }
     }
 

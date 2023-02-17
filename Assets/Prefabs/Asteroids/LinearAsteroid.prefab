@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 6520079953765315581}
   - component: {fileID: 6520079953765315580}
   - component: {fileID: 6520079953765315579}
+  - component: {fileID: 2798682403191912077}
   m_Layer: 0
   m_Name: LinearAsteroid
-  m_TagString: Asteroid
+  m_TagString: Dangerous
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -99,9 +100,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.013934612, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.45355272
 --- !u!114 &6520079953765315579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,3 +118,25 @@ MonoBehaviour:
   _speed: 5
   _direction: {x: 0, y: 1}
   _patternTime: 1
+  _pauseTime: 0
+--- !u!50 &2798682403191912077
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6520079953765315582}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 6200000, guid: d21e546cca6cb204a8d9a5ff29fe487a, type: 2}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4

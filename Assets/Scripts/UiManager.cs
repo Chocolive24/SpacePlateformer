@@ -21,7 +21,7 @@ public class UiManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _scoreTxt.text = _score.Value.ToString();
+        _scoreTxt.text = "Score : " + _score.Value.ToString();
         _coinCounterTxt.text = _collectibleManager.PickedUpCount.ToString();
     }
 }
