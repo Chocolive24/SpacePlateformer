@@ -9,3 +9,5 @@ TODO
 - mettre sons et feu artifice sur checkpoints
 
 - corriger ennemis
+
+- PLANET -> problem vient que si tu laisses la touhce saut appuyée, tu recois encore -20 de gravité. donc ca fait un déplacement de zinizin

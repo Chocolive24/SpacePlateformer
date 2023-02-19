@@ -166,6 +166,8 @@ public class MovementController : MonoBehaviour
             _previousYVelocity = Vector2.zero;
             _gravityVelocity = Vector2.zero;
         }
+        
+        Debug.Log(_gravityVelocity + " " + _isJumping);
     }
 
     private void FixedUpdate()
@@ -224,32 +226,18 @@ public class MovementController : MonoBehaviour
         if (_inputs.enabled)
         {
             // Horizontal Movements for the Vector of movement
-            if (_jumpController.HorizontalSense.y == 0)
-            {
-                //_movementVelocity = _jumpController.HorizontalSense * (_inputs.Move.x * targetSpeed);
-                _movementVelocity = transform.right * 
-                                    (_jumpController.HorizontalSense.x * (_inputs.Move.x * targetSpeed));
-            }
-            // Vertical Movements for the Vector of movement
-            else if (_jumpController.HorizontalSense.y != 0)
-            {
-                _movementVelocity = transform.right * 
-                                    (_jumpController.HorizontalSense.y * (_inputs.Move.y * targetSpeed));
-                
-                // if (_inputs.Move.x <= 0.8f && _inputs.Move.x > -0.8)
-                // {
-                //     _movementVelocity = transform.right * 
-                //                         (_jumpController.HorizontalSense.y * (_inputs.Move.y * targetSpeed));
-                //     
-                //     //_movementVelocity = _jumpController.HorizontalSense.y * (_inputs.Move.y * targetSpeed);
-                //     //_movementVelocity = transform.right * (_inputs.Move.y * targetSpeed);
-                // }
-                // else
-                // {
-                //     _movementVelocity = transform.right * (_inputs.Move.x * targetSpeed);
-                // }
-                
-            }
+                if (_jumpController.HorizontalSense.y == 0)
+                {
+                    //_movementVelocity = _jumpController.HorizontalSense * (_inputs.Move.x * targetSpeed);
+                    _movementVelocity = transform.right * 
+                                        (_jumpController.HorizontalSense.x * (_inputs.Move.x * targetSpeed));
+                }
+                // Vertical Movements for the Vector of movement
+                else if (_jumpController.HorizontalSense.y != 0)
+                {
+                    _movementVelocity = transform.right * 
+                                        (_jumpController.HorizontalSense.y * (_inputs.Move.y * targetSpeed));
+                }
         }
         else
         {
@@ -307,6 +295,14 @@ public class MovementController : MonoBehaviour
 
                     _gravityVelocity += verletVelocity;
                 }
+                
+                // else if (Mathf.Abs(verletVelocity.x) <= 20f && Mathf.Abs(verletVelocity.y) <= 20f
+                //                                             && _isOnAPlanetTrigger)
+                // {
+                //     _gravityVelocity /= 2;
+                //
+                //     _gravityVelocity += verletVelocity /= 2;
+                // }
             }
         }
         
@@ -322,12 +318,9 @@ public class MovementController : MonoBehaviour
                 //_gravityVelocity += _jumpController.BaseGravity * Time.deltaTime;
                 _gravityVelocity += _jumpController.JumpGravity * Time.deltaTime;
             }
-            
-            
-
-
-
-            // if (Mathf.Abs(_gravityVelocity.x) <= 10f && Mathf.Abs(_gravityVelocity.y) <= 10f)
+        }
+        
+        // if (Mathf.Abs(_gravityVelocity.x) <= 10f && Mathf.Abs(_gravityVelocity.y) <= 10f)
             // {
             //     _appliedGravity = _jumpController.BaseGravity;
             //     
@@ -337,7 +330,6 @@ public class MovementController : MonoBehaviour
             //
             //     _gravityVelocity += verletVelocity;
             // }
-        }
 
 
 
@@ -361,13 +353,13 @@ public class MovementController : MonoBehaviour
     private void HandleJump()
     {
         if (_inputs.Jump && _coyoteTimeCounter > 0f && !_isJumping || 
-            _inputs.Jump && _jumpBuffer.CanJump && !_isJumping)
+            _inputs.Jump && _jumpBuffer.CanJump && !_isJumping) 
         {
             _gravityVelocity = _jumpController.InitialJumpVelocity;
             _isJumping = true;
         }
-        else if (!_inputs.Jump && _isJumping && _isGrounded ||
-                 !_inputs.Jump && _isJumping && _jumpBuffer.CanJump)
+        else if (!_inputs.Jump && _isJumping && _isGrounded || 
+                 !_inputs.Jump && _isJumping && _jumpBuffer.CanJump) 
         {
             _isJumping = false;
         
