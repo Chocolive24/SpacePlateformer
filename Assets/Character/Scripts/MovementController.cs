@@ -453,8 +453,11 @@ public class MovementController : MonoBehaviour
             {
                 _isOnMovingPlatform = true;
                 
+                _movementVelocity = col.gameObject.GetComponent<Rigidbody2D>().velocity;
+                
                 if (!_inputs.Jump)
                 {
+                     
                     _gravityVelocity = col.gameObject.GetComponent<Rigidbody2D>().velocity * 4;
                     Debug.Log(col.gameObject.GetComponent<Rigidbody2D>().velocity);
                 }
